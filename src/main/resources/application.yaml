@@ -1,8 +1,9 @@
 # configurazione del server
 spring:
   profiles:
-    active: test
-    #active: mysql
+    #active: sqlite|postgres|test
+    #active: sqlite
+    active: postgres
 
 server:
   port: 8092

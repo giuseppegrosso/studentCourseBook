@@ -1,10 +1,19 @@
 package it.plansoft.studentcoursebook.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "Enrolment")
 @Table(name = "enrolment")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Enrolment {
 
     @EmbeddedId
@@ -38,15 +47,7 @@ public class Enrolment {
     private LocalDateTime createdAt;
 
 
-    public Enrolment(EnrolmentId id,
-                     Student student,
-                     Course course,
-                     LocalDateTime createdAt) {
-        this.id = id;
-        this.student = student;
-        this.course = course;
-        this.createdAt = createdAt;
-    }
+
 
     public Enrolment(Student student,
                      Course course,
@@ -56,38 +57,4 @@ public class Enrolment {
         this.createdAt = createdAt;
     }
 
-    public Enrolment() {
-    }
-
-    public EnrolmentId getId() {
-        return id;
-    }
-
-    public void setId(EnrolmentId id) {
-        this.id = id;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

@@ -1,5 +1,10 @@
 package it.plansoft.studentcoursebook.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -14,18 +19,14 @@ import static javax.persistence.GenerationType.SEQUENCE;
                 )
         }
 )
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class StudentIdCard {
 
     @Id
-    @SequenceGenerator(
-            name = "student_card_id_sequence",
-            sequenceName = "student_card_id_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "student_card_id_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "id",
             updatable = false
@@ -56,26 +57,6 @@ public class StudentIdCard {
     public StudentIdCard(String cardNumber, Student student) {
         this.cardNumber = cardNumber;
         this.student = student;
-    }
-
-    public StudentIdCard() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "StudentIdCard{" +
-                "id=" + id +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", student=" + student +
-                '}';
     }
 
 }

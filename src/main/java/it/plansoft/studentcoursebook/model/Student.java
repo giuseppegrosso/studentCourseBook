@@ -1,11 +1,13 @@
 package it.plansoft.studentcoursebook.model;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Student")
 @Table(
@@ -14,18 +16,14 @@ import static javax.persistence.GenerationType.SEQUENCE;
                 @UniqueConstraint(name = "student_email_unique", columnNames = "email")
         }
 )
-public class Student {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class Student extends BaseId<Long> {
 
     @Id
-    @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "student_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "id"
     )
@@ -92,49 +90,6 @@ public class Student {
         this.age = age;
     }
 
-    public Student() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     public void addBook(Book book) {
         if (!this.books.contains(book)) {
@@ -150,17 +105,6 @@ public class Student {
         }
     }
 
-    public void setStudentIdCard(StudentIdCard studentIdCard) {
-        this.studentIdCard = studentIdCard;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public List<Enrolment> getEnrolments() {
-        return enrolments;
-    }
 
     public void addEnrolment(Enrolment enrolment) {
         if (!enrolments.contains(enrolment)) {
@@ -172,14 +116,5 @@ public class Student {
         enrolments.remove(enrolment);
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                '}';
-    }
+
 }

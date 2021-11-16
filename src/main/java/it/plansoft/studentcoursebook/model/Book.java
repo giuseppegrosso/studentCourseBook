@@ -1,25 +1,22 @@
 package it.plansoft.studentcoursebook.model;
 
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
 @Entity(name = "Book")
 @Table(name = "book")
-public class Book {
+@Data
+@NoArgsConstructor
+@ToString
+public class Book extends BaseId<Long> {
 
     @Id
-    @SequenceGenerator(
-            name = "book_sequence",
-            sequenceName = "book_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "book_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(
             name = "id",
             updatable = false
@@ -50,8 +47,6 @@ public class Book {
     )
     private Student student;
 
-    public Book() {
-    }
 
     public Book(String bookName,
                 LocalDateTime createdAt) {
@@ -59,45 +54,4 @@ public class Book {
         this.bookName = bookName;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", createdAt=" + createdAt +
-                ", bookName='" + bookName + '\'' +
-                ", student=" + student +
-                '}';
-    }
 }
