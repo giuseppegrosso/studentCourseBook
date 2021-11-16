@@ -1,0 +1,17 @@
+# configurazione del server
+spring:
+  profiles:
+    active: test
+    #active: mysql
+
+server:
+  port: 8092
+  servlet:
+    contextPath: /studentCourseBook
+
+
+# impostazioni per hibernate
+hibernate:
+  hbm2ddl:
+    auto: none
+  show-sql: true
