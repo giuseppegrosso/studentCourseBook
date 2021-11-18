@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "course")
 @Data
 @NoArgsConstructor
-@ToString
 public class Course extends BaseId<Long> {
 
     @Id
@@ -46,10 +45,6 @@ public class Course extends BaseId<Long> {
     public Course(String name, String department) {
         this.name = name;
         this.department = department;
-    }
-
-    public List<Enrolment> getEnrolments() {
-        return enrolments;
     }
 
     public void addEnrolment(Enrolment enrolment) {

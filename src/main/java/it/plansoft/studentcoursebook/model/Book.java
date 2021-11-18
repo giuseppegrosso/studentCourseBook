@@ -1,9 +1,9 @@
 package it.plansoft.studentcoursebook.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "book")
 @Data
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 public class Book extends BaseId<Long> {
 
     @Id

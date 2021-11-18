@@ -1,6 +1,7 @@
 package it.plansoft.studentcoursebook.repository;
 
 import it.plansoft.studentcoursebook.model.Student;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -13,14 +14,16 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface StudentRepository extends PagingAndSortingRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE s.email = ?1")
     Optional<Student> findStudentByEmail(String email);
 
+    // HSQL
     @Query("SELECT s FROM Student s WHERE s.firstName = ?1 AND s.age >= ?2")
     List<Student> selectStudentWhereFirstNameAndAgeGreaterOrEqual(
             String firstName, Integer age);
 
+    // NATIVO
     @Query(
             value = "SELECT * FROM student WHERE first_name = :firstName AND age >= :age",
             nativeQuery = true)
@@ -28,6 +31,7 @@ public interface StudentRepository extends PagingAndSortingRepository<Student, L
             @Param("firstName") String firstName,
             @Param("age") Integer age);
 
+    // accessorio: è implicito nel jpaRepository
     @Transactional
     @Modifying
     @Query("DELETE FROM Student u WHERE u.id = ?1")

@@ -13,8 +13,14 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Enrolment {
+
+    // @Embeddable --> definisce la chiave composta.
+    //
+    // @EmbeddedId ---> definisce che sto usando una chiave composta.
+
+    // @MapsId("courseId") --> definisce la proprietà java che contiene la referenza alla chiave.
+
 
     @EmbeddedId
     private EnrolmentId id;

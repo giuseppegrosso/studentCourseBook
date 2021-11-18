@@ -19,7 +19,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Student extends BaseId<Long> {
 
     @Id

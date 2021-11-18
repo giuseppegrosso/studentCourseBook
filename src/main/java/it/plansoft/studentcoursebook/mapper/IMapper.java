@@ -2,6 +2,7 @@ package it.plansoft.studentcoursebook.mapper;
 
 import org.mapstruct.Context;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -21,4 +22,6 @@ public interface IMapper<DTO, MODEL> {
     // set
     Set<DTO> toSetDtos(List<MODEL> model);
     // ... aggiungere eventuali altre collection
+
+    Collection<DTO> toDtosNew(List<MODEL> models, @Context CycleAvoidingMappingContext context);
 }

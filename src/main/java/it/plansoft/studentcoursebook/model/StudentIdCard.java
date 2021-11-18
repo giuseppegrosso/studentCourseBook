@@ -22,7 +22,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class StudentIdCard {
 
     @Id

@@ -28,7 +28,7 @@ public class StudentCourseBookApplication {
 
 			String firstName = faker.name().firstName();
 			String lastName = faker.name().lastName();
-			String email = String.format("giuseppe.ing.grosso@gmail.com", firstName, lastName);
+			String email = String.format("%s.%s.@gmail.com", firstName.toLowerCase(), lastName.toLowerCase());
 			Student student = new Student(
 					firstName,
 					lastName,
@@ -36,10 +36,10 @@ public class StudentCourseBookApplication {
 					faker.number().numberBetween(17, 55));
 
 			student.addBook(
-					new Book("Clean Code", LocalDateTime.now().minusDays(4)));
+					new Book("Flutter", LocalDateTime.now().minusDays(4)));
 
 			student.addBook(
-					new Book("Think and Grow Rich", LocalDateTime.now()));
+					new Book("Spring boot", LocalDateTime.now()));
 
 			student.addBook(
 					new Book("Spring Data JPA", LocalDateTime.now().minusYears(1)));
@@ -53,7 +53,7 @@ public class StudentCourseBookApplication {
 			student.addEnrolment(new Enrolment(
 					new EnrolmentId(1L, 1L),
 					student,
-					new Course("Computer Science", "IT"),
+					new Course("Spring boot", "IT"),
 					LocalDateTime.now()
 			));
 
