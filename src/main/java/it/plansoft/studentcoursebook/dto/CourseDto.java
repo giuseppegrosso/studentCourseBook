@@ -32,4 +32,8 @@ public class CourseDto extends BaseId<Long> {
 
     private List<Enrolment> enrolments = new ArrayList<>();
 
+    public CourseDto(String name, String department) {
+        this.name = name;
+        this.department = department;
+    }
 }

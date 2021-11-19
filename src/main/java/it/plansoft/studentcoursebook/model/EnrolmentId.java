@@ -21,4 +21,8 @@ public class EnrolmentId implements Serializable {
     private Long courseId;
 
 
+    public EnrolmentId(Student student, Course course) {
+        this.studentId = student.getId();
+        this.courseId = course.getId();
+    }
 }
