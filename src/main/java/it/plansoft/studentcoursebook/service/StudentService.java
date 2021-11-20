@@ -1,23 +1,22 @@
 package it.plansoft.studentcoursebook.service;
 
 import it.plansoft.studentcoursebook.dto.CourseDto;
-import it.plansoft.studentcoursebook.dto.EnrolmentDto;
-import it.plansoft.studentcoursebook.dto.EnrolmentIdDto;
 import it.plansoft.studentcoursebook.dto.StudentDto;
-import it.plansoft.studentcoursebook.mapper.CycleAvoidingMappingContext;
 import it.plansoft.studentcoursebook.mapper.ICourseMapper;
 import it.plansoft.studentcoursebook.mapper.IStudentMapper;
-import it.plansoft.studentcoursebook.model.*;
+import it.plansoft.studentcoursebook.model.Course;
+import it.plansoft.studentcoursebook.model.Enrolment;
+import it.plansoft.studentcoursebook.model.EnrolmentId;
+import it.plansoft.studentcoursebook.model.Student;
 import it.plansoft.studentcoursebook.repository.CourseRepository;
 import it.plansoft.studentcoursebook.repository.EnrolmentRepository;
 import it.plansoft.studentcoursebook.repository.StudentRepository;
 import it.plansoft.studentcoursebook.service.interfaces.IStudentService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -26,72 +25,89 @@ import java.util.Optional;
  * @since 18/11/2021
  */
 @Service
-@AllArgsConstructor
 @Transactional
-public class StudentService implements IStudentService {
+public class StudentService
+        extends BaseCrudService<StudentRepository,
+        IStudentMapper,
+        StudentDto,
+        Student,
+        Long>
+        implements IStudentService {
 
-    private StudentRepository studentRepository;
+    @Autowired
     private CourseRepository courseRepository;
+    @Autowired
     private EnrolmentRepository enrolmentRepository;
 
+    public StudentService(StudentRepository studentRepository) {
+        super(studentRepository, IStudentMapper.INSTANCE);
+    }
+
+
     @Override
-    public StudentDto addStudentCourse(StudentDto studentDto, CourseDto courseDto) {
+    public StudentDto addEnrolment(StudentDto studentDto) {
         Student student = IStudentMapper.INSTANCE.dtoToModel(studentDto);
-        Course course = ICourseMapper.INSTANCE.dtoToModel(courseDto);
+        StudentDto retDto = null;
+        if (studentDto.getCourseDtos() != null) {
 
-        // check if exist student
-        if (student.getId() != null) {
-            // read student in database
-            student = studentRepository.getById(student.getId());
-        } else
-            student = studentRepository.save(student);
+            // check if exist student
+            if (student.getId() != null) {
+                // read student in database
+                student = repository.getById(student.getId());
+            } else
+                student = repository.save(student);
 
-        if (course.getId() != null) {
-            // read course in database
-            course = courseRepository.getById(student.getId());
-        } else
-            course = courseRepository.save(course);
 
-        // save enrollment
-        EnrolmentId enrolmentId = new EnrolmentId(student.getId(), course.getId());
-        Enrolment enrolmentSaved = enrolmentRepository.save(new Enrolment(enrolmentId,
-                student,
-                course,
-                LocalDateTime.now()));
+            for (CourseDto courseDto : studentDto.getCourseDtos()) {
 
-        // add enrollment
-        student.addEnrolment(enrolmentSaved);
+                Course course = ICourseMapper.INSTANCE.dtoToModel(courseDto);
 
-        // save the student
-        student = studentRepository.save(student);
+                if (course.getId() != null) {
+                    // read course in database
+                    course = courseRepository.getById(course.getId());
+                } else
+                    course = courseRepository.save(course);
 
-         //some logic with result and return it
-        StudentDto retDto = new StudentDto(student.getId(), student.getFirstName(),
-                student.getLastName(), student.getEmail(), student.getAge(), student.getStudentIdCard(), student.getBooks());
+                // save enrollment
+                EnrolmentId enrolmentId = new EnrolmentId(student.getId(), course.getId());
+                Enrolment enrolmentSaved = enrolmentRepository.save(new Enrolment(enrolmentId,
+                        student,
+                        course,
+                        courseDto.getEnrolmentAt() != null ? courseDto.getEnrolmentAt() : LocalDateTime.now()));
 
-        // convert data to dto: enrollment
-        student.getEnrolments().stream().forEach(x -> {
-            studentDto.addCourse(x.getCourse(), x.getCreatedAt());
-        });
+                // add enrollment
+                student.addEnrolment(enrolmentSaved);
 
+            }
+            // save the student
+            student = repository.save(student);
+
+            //some logic with result and return it
+            retDto = readFromStudent(student);
+        }
         return retDto;
     }
 
+
     @Override
-    public StudentDto findById(Long idStudent) {
-        return studentRepository.findById(idStudent)
+    public Optional<StudentDto> findById(Long idStudent) {
+        return repository.findById(idStudent)
                 .map(s -> {
+                    return readFromStudent(s);
+                });
 
-                    //some logic with result and return it
-                    StudentDto studentDto = new StudentDto(s.getId(), s.getFirstName(), s.getLastName(), s.getEmail(), s.getAge(), s.getStudentIdCard(), s.getBooks());
+    }
 
-                    // convert data to dto: enrollment
-                    s.getEnrolments().stream().forEach(x -> {
-                        studentDto.addCourse(x.getCourse(), x.getCreatedAt());
-                    });
 
-                    return studentDto;
-                }).get();
+    private StudentDto readFromStudent(Student student) {
+        StudentDto retDto = new StudentDto(student.getId(), student.getFirstName(),
+                student.getLastName(), student.getEmail(), student.getAge(), student.getStudentIdCard() != null ? student.getStudentIdCard().getCardNumber() : "");
 
+        // convert data to dto: enrollment
+        student.getEnrolments().stream().forEach(x -> {
+            retDto.addCourse(new CourseDto(x.getCourse().getId(), x.getCourse().getName(), x.getCourse().getDepartment(), x.getCreatedAt()));
+        });
+
+        return retDto;
     }
 }

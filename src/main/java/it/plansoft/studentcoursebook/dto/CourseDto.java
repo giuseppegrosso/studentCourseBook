@@ -27,13 +27,12 @@ public class CourseDto extends BaseId<Long> {
 
     private Long id;
     private String name;
-
     private String department;
+    private LocalDateTime enrolmentAt;
 
-    private List<Enrolment> enrolments = new ArrayList<>();
-
-    public CourseDto(String name, String department) {
+    public CourseDto(String name, String department, LocalDateTime enrolmentAt) {
         this.name = name;
         this.department = department;
+        this.enrolmentAt = enrolmentAt;
     }
 }

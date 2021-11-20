@@ -3,6 +3,7 @@ package it.plansoft.studentcoursebook.service;
 import it.plansoft.studentcoursebook.mapper.CycleAvoidingMappingContext;
 import it.plansoft.studentcoursebook.mapper.IMapper;
 import it.plansoft.studentcoursebook.service.interfaces.ICrudService;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@NoArgsConstructor
 public class BaseCrudService<
         REPOSITORY extends JpaRepository<MODEL, ID>,
         MAPPER extends IMapper<DTO, MODEL>,
