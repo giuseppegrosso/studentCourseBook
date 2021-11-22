@@ -28,11 +28,9 @@ public class CourseDto extends BaseId<Long> {
     private Long id;
     private String name;
     private String department;
-    private LocalDateTime enrolmentAt;
 
-    public CourseDto(String name, String department, LocalDateTime enrolmentAt) {
+    public CourseDto(String name, String department) {
         this.name = name;
         this.department = department;
-        this.enrolmentAt = enrolmentAt;
     }
 }

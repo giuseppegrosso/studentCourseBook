@@ -30,25 +30,5 @@ public class StudentDto extends BaseId<Long> {
     private String lastName;
     private String email;
     private Integer age;
-    private String cardNumber;
 
-    private List<BookDto> books = new ArrayList<>();
-
-    // riferimenti al corso e iscrizione al corso.
-    private List<CourseDto> courseDtos = new ArrayList<>();
-
-    public StudentDto(Long id, String firstName, String lastName, String email, Integer age, String cardNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.age = age;
-        this.cardNumber = cardNumber;
-    }
-
-    public void addCourse(CourseDto courseDto)
-    {
-        if (courseDtos == null) courseDtos = new ArrayList<>();
-        courseDtos.add(courseDto);
-    }
 }

@@ -1,6 +1,10 @@
 package it.plansoft.studentcoursebook.service.interfaces;
 
+import it.plansoft.studentcoursebook.dto.CourseEnrolmentDto;
 import it.plansoft.studentcoursebook.dto.StudentDto;
+import it.plansoft.studentcoursebook.dto.StudentEnrolmentCourseDto;
+
+import java.util.List;
 
 /**
  * @author Giuseppe Grosso
@@ -9,6 +13,7 @@ import it.plansoft.studentcoursebook.dto.StudentDto;
  */
 public interface IStudentService {
 
-    StudentDto addEnrolment(StudentDto studentCourseEnrolmentDto);
+    StudentEnrolmentCourseDto addEnrolment(StudentDto studentDto, List<CourseEnrolmentDto> courseEnrolmentDtoList);
 
+    StudentEnrolmentCourseDto findByIdStudent(Long idStudent);
 }

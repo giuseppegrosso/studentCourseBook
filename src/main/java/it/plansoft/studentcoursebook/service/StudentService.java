@@ -1,7 +1,9 @@
 package it.plansoft.studentcoursebook.service;
 
 import it.plansoft.studentcoursebook.dto.CourseDto;
+import it.plansoft.studentcoursebook.dto.CourseEnrolmentDto;
 import it.plansoft.studentcoursebook.dto.StudentDto;
+import it.plansoft.studentcoursebook.dto.StudentEnrolmentCourseDto;
 import it.plansoft.studentcoursebook.mapper.ICourseMapper;
 import it.plansoft.studentcoursebook.mapper.IStudentMapper;
 import it.plansoft.studentcoursebook.model.Course;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -45,22 +48,22 @@ public class StudentService
 
 
     @Override
-    public StudentDto addEnrolment(StudentDto studentDto) {
+    public StudentEnrolmentCourseDto addEnrolment(StudentDto studentDto, List<CourseEnrolmentDto> courseEnrolmentDtoList) {
         Student student = IStudentMapper.INSTANCE.dtoToModel(studentDto);
-        StudentDto retDto = null;
-        if (studentDto.getCourseDtos() != null) {
+        StudentEnrolmentCourseDto retDto = null;
 
-            // check if exist student
-            if (student.getId() != null) {
-                // read student in database
-                student = repository.getById(student.getId());
-            } else
-                student = repository.save(student);
+        // check if exist student
+        if (student.getId() != null) {
+            // read student in database
+            student = repository.getById(student.getId());
+        } else
+            student = repository.save(student);
 
+        if (courseEnrolmentDtoList != null) {
 
-            for (CourseDto courseDto : studentDto.getCourseDtos()) {
+            for (CourseEnrolmentDto courseDto : courseEnrolmentDtoList) {
 
-                Course course = ICourseMapper.INSTANCE.dtoToModel(courseDto);
+                Course course = ICourseMapper.INSTANCE.dtoToModel(courseDto.getCourseDto());
 
                 if (course.getId() != null) {
                     // read course in database
@@ -73,7 +76,7 @@ public class StudentService
                 Enrolment enrolmentSaved = enrolmentRepository.save(new Enrolment(enrolmentId,
                         student,
                         course,
-                        courseDto.getEnrolmentAt() != null ? courseDto.getEnrolmentAt() : LocalDateTime.now()));
+                        courseDto.getCreatedAt() != null ? courseDto.getCreatedAt() : LocalDateTime.now()));
 
                 // add enrollment
                 student.addEnrolment(enrolmentSaved);
@@ -88,24 +91,24 @@ public class StudentService
         return retDto;
     }
 
-
     @Override
-    public Optional<StudentDto> findById(Long idStudent) {
+    public StudentEnrolmentCourseDto findByIdStudent(Long idStudent) {
         return repository.findById(idStudent)
                 .map(s -> {
                     return readFromStudent(s);
-                });
-
+                }).get();
     }
 
+    private StudentEnrolmentCourseDto readFromStudent(Student student) {
+        StudentEnrolmentCourseDto retDto = new StudentEnrolmentCourseDto();
+        StudentDto studentDto = new StudentDto(student.getId(), student.getFirstName(),
+                student.getLastName(), student.getEmail(), student.getAge());
 
-    private StudentDto readFromStudent(Student student) {
-        StudentDto retDto = new StudentDto(student.getId(), student.getFirstName(),
-                student.getLastName(), student.getEmail(), student.getAge(), student.getStudentIdCard() != null ? student.getStudentIdCard().getCardNumber() : "");
-
+        retDto.setStudentDto(studentDto);
         // convert data to dto: enrollment
         student.getEnrolments().stream().forEach(x -> {
-            retDto.addCourse(new CourseDto(x.getCourse().getId(), x.getCourse().getName(), x.getCourse().getDepartment(), x.getCreatedAt()));
+            CourseDto courseDto = new CourseDto(x.getCourse().getId(), x.getCourse().getName(), x.getCourse().getDepartment());
+            retDto.addCourse(courseDto, x.getCreatedAt());
         });
 
         return retDto;

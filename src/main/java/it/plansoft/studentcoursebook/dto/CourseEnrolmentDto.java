@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class StudentCourseEnrolmentDto {
-    StudentDto studentDto;
-    List<CourseDto> courseDto;
+public class CourseEnrolmentDto {
+    private CourseDto courseDto;
+    private LocalDateTime createdAt;
 }

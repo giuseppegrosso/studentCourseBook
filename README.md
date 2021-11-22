@@ -75,6 +75,10 @@ Notes:
 
 ![Diagramma ER](sqlite-sample-database-color.jpg)
 
+## Catalogo Swagger
+
+![Diagramma ER](swagger.jpg)
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
