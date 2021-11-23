@@ -78,6 +78,9 @@ Notes:
 ## Catalogo Swagger
 
 ![Diagramma ER](swagger.jpg)
+![Diagramma ER](swagger-student.jpg)
+![Diagramma ER](swagger-course.jpg)
+![Diagramma ER](swagger-student-enrolment.jpg)
 
 ## License
 

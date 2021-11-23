@@ -1,5 +1,6 @@
 package it.plansoft.studentcoursebook.controller;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import it.plansoft.studentcoursebook.dto.StudentDto;
 import it.plansoft.studentcoursebook.mapper.IStudentMapper;
 import it.plansoft.studentcoursebook.model.Student;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/student")
+@ApiResponse(description = "API per operazioni di inserimento/modifica/cancellazione/modifica anagrafica studente")
 public class StudentController extends BaseCrudController<
         StudentService,
         StudentRepository,
