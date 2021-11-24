@@ -17,7 +17,7 @@ In this course i show you how to implements rest services, in particular
 
 - Connect to database
 - sqlite
-- coursegres
+- postgres
 - Jpa Mapping
 - Pagination and Sorting
 - 1:1 Relationships
@@ -28,7 +28,7 @@ In this course i show you how to implements rest services, in particular
 ## Database Supported
 
 - SQLite
-- coursegreSQL
+- postgreSQL
 
 ## Data Model
 
